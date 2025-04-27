@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Via - Voice Assistant</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Optional: Add Font Awesome for mic icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Via - Your Tech Assistant</h1>
+        <p class="description">
+            Hi, I am Via, your friendly and patient virtual tech voice assistant
+            helping senior citizens with common technology questions (like using
+            smartphones, websites, apps, email, online safety).
+        </p>
+
+        <div class="interaction-area">
+            <img src="assets/avatar.png" alt="Via Avatar" class="avatar">
+            <div class="mic-area">
+                <button id="micButton" class="mic-button" aria-label="Start recording">
+                    <!-- Mic icon using Font Awesome -->
+                    <i class="fas fa-microphone"></i>
+                    <!-- OR use an SVG or text if you prefer -->
+                    <!-- <svg>...</svg> -->
+                </button>
+                <span id="micText" class="mic-text">Click me to ask your technological questions</span>
+            </div>
+        </div>
+
+        <div id="statusMessage" class="status-message"></div>
+
+        <div id="responseArea" class="response-area" style="display: none;">
+             <h2>Via's Response:</h2>
+             <p id="transcriptOutput"></p>
+             <audio id="audioPlayer" controls style="display: none;"></audio> <!-- Controls hidden initially -->
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

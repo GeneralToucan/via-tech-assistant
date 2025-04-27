@@ -1,0 +1,145 @@
+body {
+    font-family: sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align items to the top */
+    min-height: 100vh;
+}
+
+.container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.description {
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.interaction-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px; /* Space between avatar and mic area */
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover; /* Ensures image covers the area well */
+}
+
+.mic-area {
+    display: flex;
+    flex-direction: column; /* Stack button and text vertically */
+    align-items: center;
+    text-align: center;
+}
+
+.mic-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    margin-bottom: 5px; /* Space between button and text */
+}
+
+.mic-button:hover {
+    background-color: #0056b3;
+}
+
+.mic-button:active {
+    transform: scale(0.95);
+}
+
+.mic-button.recording {
+    background-color: #dc3545; /* Red when recording */
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(220, 53, 69, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+}
+
+.mic-text {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.status-message {
+    margin-top: 15px;
+    min-height: 1.2em; /* Reserve space */
+    font-style: italic;
+    color: #333;
+}
+
+.status-message.error {
+    color: #dc3545; /* Red for errors */
+    font-weight: bold;
+}
+
+.response-area {
+    margin-top: 30px;
+    text-align: left; /* Align text left within the response area */
+    padding: 20px;
+    background-color: #e9ecef;
+    border-radius: 5px;
+}
+
+.response-area h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    color: #333;
+}
+
+#transcriptOutput {
+    margin-bottom: 15px;
+    white-space: pre-wrap; /* Preserve formatting */
+}
+
+#audioPlayer {
+    width: 100%; /* Make audio player take full width */
+    margin-top: 10px;
+}
+
+/* Basic Responsive */
+@media (max-width: 480px) {
+    .container {
+        padding: 20px;
+    }
+    .interaction-area {
+        flex-direction: column; /* Stack avatar and mic area */
+        gap: 15px;
+    }
+    h1 {
+        font-size: 1.5em;
+    }
+}
