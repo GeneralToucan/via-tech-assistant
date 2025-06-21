@@ -1,6 +1,8 @@
 # Via: AI Tech Assistant for Seniors
 AI tech voice assistant for Seniors.
 
+**Demo Video Link:** https://www.youtube.com/watch?v=iKEuagyOaqU
+
 ## Inspiration
 The rapid pace of technological change often leaves seniors struggling to keep up, particularly those without prior tech education. As a volunteer tech assistant supporting senior patrons in a Sydney local council library, I frequently encounter common questions about basic laptop and mobile phone usage.
 
