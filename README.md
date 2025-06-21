@@ -1,6 +1,11 @@
 # Via: AI Tech Assistant for Seniors
 AI tech voice assistant for Seniors.
 
+## Inspiration
+The rapid pace of technological change often leaves seniors struggling to keep up, particularly those without prior tech education. As a volunteer tech assistant supporting senior patrons in a Sydney local council library, I frequently encounter common questions about basic laptop and mobile phone usage.
+
+To address this, I propose leveraging generative AI to develop a virtual voice assistant named Via. This AI assistant would mimic my role, providing accessible tech support to seniors and helping to bridge the digital gap, potentially through integration with the local council's app or website.
+
 **Architecture Diagram**
 
 
@@ -8,11 +13,6 @@ AI tech voice assistant for Seniors.
 
 
 **Demo Video Link:** https://www.youtube.com/watch?v=iKEuagyOaqU
-
-## Inspiration
-The rapid pace of technological change often leaves seniors struggling to keep up, particularly those without prior tech education. As a volunteer tech assistant supporting senior patrons in a Sydney local council library, I frequently encounter common questions about basic laptop and mobile phone usage.
-
-To address this, I propose leveraging generative AI to develop a virtual voice assistant named Via. This AI assistant would mimic my role, providing accessible tech support to seniors and helping to bridge the digital gap, potentially through integration with the local council's app or website.
 
 ## What it does
 Project Via is an accessible web-based platform designed to provide voice-activated tech assistance, primarily for senior citizens. It offers a convenient alternative to typing, allowing users to simply speak their questions.
