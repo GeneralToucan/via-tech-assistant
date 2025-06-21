@@ -1,6 +1,12 @@
 # Via: AI Tech Assistant for Seniors
 AI tech voice assistant for Seniors.
 
+**Architecture Diagram**
+
+
+![Via_ArchitectureDiagram](https://github.com/user-attachments/assets/b5f971e2-7a62-4c84-b90f-a2c704e03ce7)
+
+
 **Demo Video Link:** https://www.youtube.com/watch?v=iKEuagyOaqU
 
 ## Inspiration
