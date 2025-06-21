@@ -81,11 +81,14 @@ def lambda_handler(event, context):
         # Assuming WAV/MP3/FLAC/Opus etc. Transcribe will try to auto-detect.
         # Specify MediaFormat if known & needed.
         transcribe_job_name = f"via-transcription-{job_id}"
+        transcript_output_key = f"transcripts/{transcribe_job_name}.json"
         print(f"Starting transcription job: {transcribe_job_name}")
         transcribe_client.start_transcription_job(
             TranscriptionJobName=transcribe_job_name,
             LanguageCode='en-US',  # Adjust language code if needed
-            Media={'MediaFileUri': temp_s3_uri}
+            Media={'MediaFileUri': temp_s3_uri},
+            OutputBucketName=TEMP_UPLOAD_BUCKET, # Should use the variable
+            OutputKey=transcript_output_key     # Should use the variable}
             # Add MediaFormat='wav' (or mp3, ogg, etc.) if auto-detection fails
         )
 
@@ -106,7 +109,12 @@ def lambda_handler(event, context):
             if status == 'COMPLETED':
                 transcript_uri = job_status['TranscriptionJob']['Transcript']['TranscriptFileUri']
                 # Download transcript file from S3
-                transcript_response = s3_client.get_object(Bucket=urllib.parse.urlparse(transcript_uri).netloc, Key=urllib.parse.urlparse(transcript_uri).path.lstrip('/'))
+
+                #transcript_response = s3_client.get_object(Bucket=urllib.parse.urlparse(transcript_uri).netloc, Key=urllib.parse.urlparse(transcript_uri).path.lstrip('/'))
+                transcript_response = s3_client.get_object(
+                    Bucket=TEMP_UPLOAD_BUCKET, # Uses the variable
+                    Key=transcript_output_key  # Uses the variable
+                )
                 transcript_data = json.loads(transcript_response['Body'].read().decode('utf-8'))
                 transcript_text = transcript_data['results']['transcripts'][0]['transcript']
                 print(f"Transcription complete: {transcript_text}")
@@ -137,18 +145,37 @@ def lambda_handler(event, context):
 
 
         # --- 5. Send transcript to Bedrock (LLM) ---
-        print(f"Sending transcript to Bedrock model: {BEDROCK_MODEL_ID}")
-        # Construct the prompt for Via
-        prompt = f"""\n\nHuman: You are Via, a friendly, patient, and clear virtual tech voice assistant helping senior citizens. Answer the following technology question simply and step-by-step if possible. Avoid jargon. Keep responses concise but helpful. Here is the user's question: "{transcript_text}"
+        print(f"Sending transcript to Bedrock model: {BEDROCK_MODEL_ID} using Messages API format")
 
-Assistant:""" # The assistant tag prompts the model to start generating the response
+        # Construct the system prompt (defines the AI's persona and instructions)
+        system_prompt = "You are Via, a friendly, patient, and clear virtual tech voice assistant helping senior citizens. Answer the user's technology question simply and step-by-step if possible. Avoid jargon. Keep responses concise but helpful."
 
+        # Construct the messages array
+        messages = [
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": transcript_text # The user's transcribed question
+                    }
+                ]
+            }
+        ]
+
+        # Note: For Claude 3, max_tokens refers to the max output tokens.
+        # It doesn't use "max_tokens_to_sample" like older Claude models.
         request_body = json.dumps({
-            "prompt": prompt,
-            "max_tokens_to_sample": 500, # Adjust as needed
-            "temperature": 0.7,         # Adjust creativity vs. factuality
-            # Add other model parameters like top_p, top_k if desired
+            "anthropic_version": "bedrock-2023-05-31", # Required for Claude 3 Messages API
+            "max_tokens": 1024, # Maximum number of tokens to generate in the response
+            "system": system_prompt,
+            "messages": messages,
+            "temperature": 0.7,
+            # "top_p": 0.9, # Optional: Add other parameters as needed
+            # "top_k": 50,  # Optional
         })
+
+        print("Bedrock Request Body:", request_body) # Log the request body for debugging
 
         bedrock_response = bedrock_runtime.invoke_model(
             body=request_body,
@@ -158,12 +185,26 @@ Assistant:""" # The assistant tag prompts the model to start generating the resp
         )
 
         response_body = json.loads(bedrock_response['body'].read())
-        # The exact path to the text depends on the model (Claude example shown)
-        llm_response_text = response_body.get('completion')
-        if not llm_response_text:
-             raise ValueError("Failed to get completion text from Bedrock response.")
+        print("Bedrock Raw Response Body:", response_body) # Log the raw response
 
-        print(f"Bedrock response received: {llm_response_text[:100]}...") # Log beginning of response
+        # --- For Claude 3 Messages API, the response structure is different ---
+        # The response is in response_body['content'][0]['text']
+        if response_body.get("content") and isinstance(response_body["content"], list) and len(response_body["content"]) > 0:
+            llm_response_text = response_body["content"][0].get("text")
+        else:
+            print("Error: 'content' not found or not in expected format in Bedrock response:", response_body)
+            llm_response_text = None # Or raise an error
+
+        if not llm_response_text:
+             # Check for error messages from Bedrock
+             if response_body.get("type") == "error":
+                  error_details = response_body.get("error", {})
+                  error_message = error_details.get("message", "Unknown Bedrock error")
+                  print(f"Bedrock API returned an error: {error_message}")
+                  raise ValueError(f"Bedrock error: {error_message}")
+             raise ValueError("Failed to get completion text from Bedrock Messages API response or response format unexpected.")
+
+        print(f"Bedrock response received (Messages API): {llm_response_text[:100]}...")
 
 
         # --- 6. Synthesize LLM response to Speech using Polly ---
