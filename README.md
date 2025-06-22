@@ -9,8 +9,7 @@ To address this, I propose leveraging generative AI to develop a virtual voice a
 **Architecture Diagram**
 
 
-![Via_ArchitectureDiagram](https://github.com/user-attachments/assets/b5f971e2-7a62-4c84-b90f-a2c704e03ce7)
-
+![Via_ArchitectureDiagram](https://github.com/user-attachments/assets/3e4302fe-5561-4200-a989-e2d0a297ecf0)
 
 **Demo Video Link:** https://www.youtube.com/watch?v=iKEuagyOaqU
 
