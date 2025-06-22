@@ -4,7 +4,7 @@ AI tech voice assistant for Seniors.
 ## Inspiration
 The rapid pace of technological change often leaves seniors struggling to keep up, particularly those without prior tech education. As a volunteer tech assistant supporting senior patrons in a Sydney local council library, I frequently encounter common questions about basic laptop and mobile phone usage.
 
-To address this, I propose leveraging generative AI to develop a virtual voice assistant named Via. This AI assistant would mimic my role, providing accessible tech support to seniors and helping to bridge the digital gap, potentially through integration with the local council's app or website.
+To address this, I propose leveraging generative AI to develop a virtual voice assistant named Via. This AI assistant would mimic my role, providing accessible tech support to seniors and helping to bridge the digital gap between generations.
 
 **Architecture Diagram**
 
@@ -36,3 +36,6 @@ Through the Lambda function, the user’s audio would be recorded, stored in a t
 The System Prompt for the model is set to ***"You are Via, a friendly, patient, and clear virtual tech voice assistant helping senior citizens. Answer the user's technology question simply and step-by-step if possible. Avoid jargon. Keep responses concise but helpful."*** such that it is customised for Via’s specific use case in helping seniors resolve tech issues.
 
 Next, Polly is used to synthesize the LLM’s response into audio before uploading it to the audio bucket in S3, and the response is returned using API Gateway back to the user in both transcript and audio form.
+
+## Note
+_Both GeneralToucan and ValeskaKusanalis/CommanderToucan accounts belong to the same user and creator of Via._
