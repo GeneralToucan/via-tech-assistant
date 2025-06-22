@@ -37,4 +37,4 @@ The System Prompt for the model is set to ***"You are Via, a friendly, patient, 
 Next, Polly is used to synthesize the LLM’s response into audio before uploading it to the audio bucket in S3, and the response is returned using API Gateway back to the user in both transcript and audio form.
 
 ## Note
-_Both GeneralToucan and ValeskaKusanalis/CommanderToucan accounts belong to the same user and creator of Via._
+_Both GeneralToucan and CommanderToucan accounts belong to the same user and creator of Via._
